@@ -1,0 +1,3 @@
+[submodule "mongorm"]
+	path = mongorm
+	url = git@github.com:zh5e/mongorm.git
