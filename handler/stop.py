@@ -1,6 +1,7 @@
 from handler import BaseHandler
 from log import debug
 from caller.taskmgr import taskmgr
+from caller.event import StopEvent
 
 
 class StopHandler(BaseHandler):
@@ -16,5 +17,7 @@ class StopHandler(BaseHandler):
 
         if acc != "123321123":
             self.write("cant stop, {}".format(msg))
-
-        taskmgr.stop_call(phone)
+            StopEvent.new(acc, 'none', phone, False)
+        else:
+            taskmgr.stop_call(phone)
+            StopEvent.new(acc, 'none', phone, True)

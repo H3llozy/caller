@@ -1,6 +1,7 @@
 from handler import BaseHandler
 from log import debug
 from caller.taskmgr import taskmgr
+from caller.event import StartEvent
 
 
 class StartHandler(BaseHandler):
@@ -12,7 +13,10 @@ class StartHandler(BaseHandler):
 
         if acc != "123321123":
             self.write("cant start")
+            StartEvent.new(acc, 'none', phone, False)
             return
 
         for i in range(0, 1):
             taskmgr.start_call(acc, phone)
+
+        StartEvent.new(acc, 'none', phone, True)

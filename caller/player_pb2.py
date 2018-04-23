@@ -18,8 +18,8 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='player.proto',
   package='pb',
-  syntax='proto2',
-  serialized_pb=_b('\n\x0cplayer.proto\x12\x02pb\"#\n\x06Player\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0b\n\x03\x61ge\x18\x02 \x01(\x05')
+  syntax='proto3',
+  serialized_pb=_b('\n\x0cplayer.proto\x12\x02pb\"#\n\x06Player\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0b\n\x03\x61ge\x18\x02 \x01(\x05\x62\x06proto3')
 )
 
 
@@ -54,7 +54,7 @@ _PLAYER = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto2',
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],

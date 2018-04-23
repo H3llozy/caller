@@ -1,0 +1,23 @@
+syntax='proto3';
+package pb;
+
+
+message StartEvent
+{
+  string _id      = 1;
+  string type     = 2;
+  string account  = 3;
+  string from_    = 4;
+  string to       = 5;
+  bool   succ     = 6;
+}
+
+message StopEvent
+{
+  string _id      = 1;
+  string type     = 2;
+  string account  = 3;
+  string from_    = 4;
+  string to       = 5;
+  bool   succ     = 6;
+}

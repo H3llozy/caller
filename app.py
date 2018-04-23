@@ -4,6 +4,7 @@ from tornado.web import Application
 from tornado.options import define, options
 
 import config
+from mongorm import mongoconn
 from log import debug
 from caller.taskmgr import taskmgr
 
@@ -51,7 +52,11 @@ def main():
     signal.signal(signal.SIGINT, handle_signal)
     signal.signal(signal.SIGTERM, handle_signal)
 
-    status_callback = "http://{}:{}/status".format(options.host, options.port)
+    # 初始化mongo配置信息
+    mongoconn.config = config.mongo
+
+    status_callback = "http://{}:{}/status".format(options.host,
+                                                   options.port)
     debug("status_callback: %s" % status_callback)
 
     taskmgr.status_callback = status_callback
