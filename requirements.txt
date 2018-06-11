@@ -2,3 +2,5 @@ twilio
 Flask>=0.12
 coloredlogs
 tornado
+pymongo
+protobuf
