@@ -1,8 +1,9 @@
 import threading
 import queue
 
-from log import debug, info
+from log import debug, info, warning
 import config
+from number.number_mgr import NumberMgr
 
 
 def hangup(queue, call_sid, called):
@@ -32,6 +33,9 @@ class StoppedPhoneNumber(object):
         self.__lock.release()
         return e
 
+    def str(self):
+        return ', '.join(self.__phone_numbers)
+
 
 class CallTask(threading.Thread):
     """
@@ -52,6 +56,8 @@ class CallTask(threading.Thread):
         self.__queue = queue
         # 任务运行状态
         self.__running = True
+        # 号码管理
+        self.__number_mgr = NumberMgr()
 
     @property
     def callmgr(self):
@@ -84,8 +90,13 @@ class CallTask(threading.Thread):
                 # 呼叫事件
                 elif 'call' in event:
                     phone_number = event['call']
+
+                    warning("XXXXXXXXX, phone num: %s".format(phone_number))
+                    warning(CallTask.stopped_phone_numbers.str())
+                    warning("XXXXXXXXX")
+
                     if not CallTask.stopped_phone_numbers.exist(phone_number):
-                        call = self.callmgr.call(config.FROM_PHONE,
+                        call = self.callmgr.call(self.__number_mgr.get(),
                                                  phone_number)
                         debug('make a call, %s', str(call))
                 # 挂断事件
@@ -102,7 +113,7 @@ class CallTask(threading.Thread):
                     并忽略
                     """
                     phone_number = event['stop']
-                    self.stopped_phone_numbers.add(phone_number)
+                    CallTask.stopped_phone_numbers.add(phone_number)
 
                 self.queue.task_done()
             except queue.Empty:
@@ -115,7 +126,8 @@ class CallTask(threading.Thread):
             self.queue.put_nowait({'hangup': call_sid})
             self.queue.put_nowait({'call': called})
         elif status == 'ringing':
-            timer = threading.Timer(20, hangup, [self.queue, call_sid, called])
+            #self.callmgr.hangup(call_sid)
+            timer = threading.Timer(2, hangup, [self.queue, call_sid, called])
             timer.start()
         elif status == 'failed':
             pass

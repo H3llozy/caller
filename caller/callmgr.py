@@ -69,16 +69,3 @@ class Callmgr(object):
         cal.update(status='completed')
 
         self.__lock.release()
-
-
-if __name__ == '__main__':
-    status_callback = "http://{}:{}/status".format(config.SERVER_IP, 5000)
-    callmgr = Callmgr(status_callback)
-
-    to_phone = config.MY_PHONE
-
-    cal = callmgr.call(config.FROM_PHONE, no_phone)
-    status = cal.status
-    callmgr.hangup(cal.sid)
-
-    print("done")
